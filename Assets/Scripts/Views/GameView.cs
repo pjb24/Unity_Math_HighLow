@@ -161,6 +161,7 @@ namespace MathHighLow.Views
                 // 선택된 버튼은 파란색, 나머지는 흰색
                 ColorBlock colors = targetButtons[i].colors;
                 colors.normalColor = (buttonTargetValue == targetValue) ? selectedColor : normalColor;
+                colors.selectedColor = (buttonTargetValue == targetValue) ? selectedColor : normalColor;
                 targetButtons[i].colors = colors;
             }
 

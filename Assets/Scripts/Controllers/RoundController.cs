@@ -31,7 +31,7 @@ namespace MathHighLow.Controllers
         // --- 라운드 상태 ---
         private Hand playerHand;
         private Hand aiHand;
-        private int currentTarget;
+        private int currentTarget = -1;
         private int currentBet;
 
         private enum RoundPhase
@@ -149,6 +149,7 @@ namespace MathHighLow.Controllers
             currentPhase = RoundPhase.Waiting;
             yield return StartCoroutine(WaitingPhase());
 
+            aiController.PlayTurn(aiHand, currentTarget);
             // --- 3. Evaluating (평가) ---
             currentPhase = RoundPhase.Evaluating;
             RoundResult result = EvaluatePhase();
@@ -186,7 +187,10 @@ namespace MathHighLow.Controllers
             GameEvents.InvokeRoundStarted();
 
             // 목표값과 베팅 초기화
-            currentTarget = config.TargetValues[0];
+            if (currentTarget == -1)
+            {
+                currentTarget = config.TargetValues[0];
+            }
             currentBet = config.MinBet;
             GameEvents.InvokeTargetSelected(currentTarget);
             GameEvents.InvokeBetChanged(currentBet);
@@ -199,7 +203,6 @@ namespace MathHighLow.Controllers
 
             // Player/AI Controller에 완성된 Hand 정보 전달
             playerController.SetHand(playerHand);
-            aiController.PlayTurn(aiHand, currentTarget);
         }
 
         /// <summary>
