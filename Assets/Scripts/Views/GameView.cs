@@ -37,9 +37,11 @@ namespace MathHighLow.Views
 
         [Header("목표값 버튼")]
         [SerializeField] private List<Button> targetButtons;
-        [SerializeField] private Color normalColor = Color.white;
-        [SerializeField] private Color selectedColor = Color.blue;
+        //[SerializeField] private Color normalColor = Color.white;
+        //[SerializeField] private Color selectedColor = Color.blue;
         private int currentSelectedTarget = -1;
+        [SerializeField] private Sprite[] targetButtonSpritesEmbossed;
+        [SerializeField] private Sprite[] targetButtonSpritesEngraved;
 
         [Header("기본 버튼")]
         [SerializeField] private Button submitButton;
@@ -114,6 +116,8 @@ namespace MathHighLow.Views
             if (targetButtons.Count > 1 && targetButtons[1] != null)
                 targetButtons[1].onClick.AddListener(() => SelectTarget(1, 20));
 
+            targetButtons[0].image.sprite = targetButtonSpritesEngraved[0];
+
             // 초기화
             resultPanel.SetActive(false);
             UpdateScoreText(0, 0);
@@ -159,10 +163,20 @@ namespace MathHighLow.Views
                 int buttonTargetValue = (i == 0) ? 1 : 20;
 
                 // 선택된 버튼은 파란색, 나머지는 흰색
-                ColorBlock colors = targetButtons[i].colors;
-                colors.normalColor = (buttonTargetValue == targetValue) ? selectedColor : normalColor;
-                colors.selectedColor = (buttonTargetValue == targetValue) ? selectedColor : normalColor;
-                targetButtons[i].colors = colors;
+                //ColorBlock colors = targetButtons[i].colors;
+                //colors.normalColor = (buttonTargetValue == targetValue) ? selectedColor : normalColor;
+                //colors.selectedColor = (buttonTargetValue == targetValue) ? selectedColor : normalColor;
+                //targetButtons[i].colors = colors;
+
+                // 선택된 버튼은 Engraved, 나머지는 Embossed
+                if (buttonTargetValue == targetValue)
+                {
+                    targetButtons[i].image.sprite = targetButtonSpritesEngraved[i];
+                }
+                else
+                {
+                    targetButtons[i].image.sprite = targetButtonSpritesEmbossed[i];
+                }
             }
 
             // 이벤트 발행 (다른 시스템에 알림)

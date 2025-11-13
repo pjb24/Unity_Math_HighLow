@@ -16,15 +16,17 @@ namespace MathHighLow.Views
     public class CardView : MonoBehaviour
     {
         [Header("UI 참조")]
-        [SerializeField] private TextMeshProUGUI displayText;
         [SerializeField] private Image backgroundImage;
         [SerializeField] private Button button;
 
+        [Header("카드 배경 Sprite")]
+        [SerializeField] private Sprite[] sprites;
+
         [Header("카드 색상")]
         [SerializeField] private Color playerNumberCardColor = Color.white;
-        [SerializeField] private Color playerOperatorCardColor = new Color(0.8f, 1f, 0.8f); // 연두색
-        [SerializeField] private Color specialCardColor = new Color(1f, 0.9f, 0.5f); // 노란색
-        [SerializeField] private Color aiCardColor = new Color(0.9f, 0.9f, 1f); // 연한 파란색
+        [SerializeField] private Color playerOperatorCardColor = new Color(0f, 1f, 0f); // 초록색
+        [SerializeField] private Color specialCardColor = new Color(1f, 0.6f, 0.2f); // 주황색
+        [SerializeField] private Color aiCardColor = new Color(0.8f, 0.8f, 1f); // 연한 파란색
 
         private Card card;
         private bool isPlayerCard;
@@ -60,8 +62,18 @@ namespace MathHighLow.Views
                 return;
             }
 
-            // 1. 텍스트 설정
-            displayText.text = card.GetDisplayText();
+            // 1. 배경 이미지 설정
+            string cardText = card.GetDisplayText();
+            string prefix = "Sheet_Edit_";
+            string cardName = prefix + cardText;
+            foreach (var sprite in sprites)
+            {
+                if (sprite.name == cardName)
+                {
+                    backgroundImage.sprite = sprite;
+                    break;
+                }
+            }
 
             // 2. 배경색 설정 (카드 타입별)
             if (!isPlayer)
